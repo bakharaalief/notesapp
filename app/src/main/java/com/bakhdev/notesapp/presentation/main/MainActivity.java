@@ -104,6 +104,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                         .subscribeWith(new DisposableSubscriber<List<Note>>() {
                             @Override
                             public void onNext(List<Note> notes) {
+                                if (notes.isEmpty())
+                                    binding.emptyLayout.setVisibility(View.VISIBLE);
+                                else binding.emptyLayout.setVisibility(View.GONE);
                                 notesAdapter.submitList(notes);
                             }
 

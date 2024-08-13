@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NotesApp</string>
+    <string name="app_name">Notes App</string>
     <string name="add_button">Add Button</string>
     <string name="add_note">Add Note</string>
     <string name="add">Add</string>
@@ -13,4 +13,6 @@
     <string name="delete">delete</string>
     <string name="cancel">cancel</string>
     <string name="edit">Edit</string>
+    <string name="notes_is_empty">Notes is Empty</string>
+    <string name="kotak">kotak</string>
 </resources>
