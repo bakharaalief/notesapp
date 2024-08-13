@@ -19,7 +19,11 @@ public class AddNoteViewModel extends ViewModel {
         this.noteUseCase = noteUseCase;
     }
 
-    Completable insertNote(Note note){
+    Completable insertNote(Note note) {
         return noteUseCase.insertNote(note);
+    }
+
+    Completable updateNote(Note note) {
+        return noteUseCase.updateNote(note);
     }
 }

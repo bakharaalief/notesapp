@@ -12,4 +12,5 @@
     <string name="detail">Detail</string>
     <string name="delete">delete</string>
     <string name="cancel">cancel</string>
+    <string name="edit">Edit</string>
 </resources>

@@ -14,7 +14,6 @@ import com.bakhdev.notesapp.presentation.adapter.NotesAdapter;
 import com.bakhdev.notesapp.presentation.add.AddNoteActivity;
 import com.bakhdev.notesapp.presentation.base.BaseActivity;
 import com.bakhdev.notesapp.presentation.detail.DetailActivity;
-import com.bakhdev.notesapp.presentation.dialog.LoadingDialog;
 import com.bakhdev.notesapp.presentation.dialog.MessageDialog;
 
 import java.util.List;
@@ -32,7 +31,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     private MainViewModel mainViewModel;
     private NotesAdapter notesAdapter;
     private CompositeDisposable compositeDisposable;
-    private LoadingDialog loadingDialog;
     private MessageDialog messageDialog;
 
     @Override
@@ -58,7 +56,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     private void setUp() {
         compositeDisposable = new CompositeDisposable();
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        loadingDialog = new LoadingDialog();
         messageDialog = new MessageDialog();
     }
 
@@ -69,15 +66,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         binding.notesRv.setAdapter(notesAdapter);
     }
 
-    private void showLoadingDialog(boolean show) {
-        if (show) {
-            loadingDialog.setCancelable(false);
-            loadingDialog.show(getSupportFragmentManager(), "Loading_Dialog");
-        } else {
-            loadingDialog.dismiss();
-        }
-    }
-
     private void showMessageDialog(String title, String msg) {
         messageDialog.setTitle(title);
         messageDialog.setMsg(msg);
@@ -86,6 +74,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
 
     public void onItemClick(Note note) {
         Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.ID_VALUE, note.getId());
         intent.putExtra(DetailActivity.TITLE_VALUE, note.getTitle());
         intent.putExtra(DetailActivity.DESC_VALUE, note.getDesc());
         startActivity(intent);
@@ -108,7 +97,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     }
 
     private void getNotesData() {
-        showLoadingDialog(true);
         compositeDisposable.add(
                 mainViewModel.getNotes()
                         .subscribeOn(Schedulers.io())
@@ -117,25 +105,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                             @Override
                             public void onNext(List<Note> notes) {
                                 notesAdapter.submitList(notes);
-                                showLoadingDialog(false);
                             }
 
                             @Override
                             public void onError(Throwable t) {
                                 showMessageDialog("error", t.getMessage());
-                                showLoadingDialog(false);
                             }
 
                             @Override
                             public void onComplete() {
-                                showLoadingDialog(false);
+
                             }
                         })
         );
     }
 
     private void deleteNote(Note note) {
-        showLoadingDialog(true);
+
         compositeDisposable.add(
                 mainViewModel.deleteNote(note)
                         .subscribeOn(Schedulers.io())
@@ -143,13 +129,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                         .subscribeWith(new DisposableCompletableObserver() {
                             @Override
                             public void onComplete() {
-                                showLoadingDialog(false);
+
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 showMessageDialog(getString(R.string.status), e.getMessage());
-                                showLoadingDialog(false);
                             }
                         })
         );
