@@ -15,7 +15,7 @@
 
 I use clean architecture for this app and divide the app into several folders
 
-- [data](https://github.com/bakharaalief/notesapp/tree/main/app/src/main/java/com/bakhdev/notesapp/datas) - handle the data
+- [data](https://github.com/bakharaalief/notesapp/tree/main/app/src/main/java/com/bakhdev/notesapp/data) - handle the data
 - [domain](https://github.com/bakharaalief/notesapp/tree/main/app/src/main/java/com/bakhdev/notesapp/domain) - handle business logic of this app
 - [di](https://github.com/bakharaalief/notesapp/tree/main/app/src/main/java/com/bakhdev/notesapp/di) - handle dependency Injection
 - [presentation](https://github.com/bakharaalief/notesapp/tree/main/app/src/main/java/com/bakhdev/notesapp/presentation) - handle view
