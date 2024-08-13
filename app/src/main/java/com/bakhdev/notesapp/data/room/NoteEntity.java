@@ -8,10 +8,13 @@ import androidx.room.PrimaryKey;
 public class NoteEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
+    final
     int id;
     @ColumnInfo(name = "title")
+    final
     String title;
     @ColumnInfo(name = "desc")
+    final
     String desc;
 
     public NoteEntity(int id, String title, String desc){

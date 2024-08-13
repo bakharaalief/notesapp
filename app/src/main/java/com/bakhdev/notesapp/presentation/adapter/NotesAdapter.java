@@ -51,9 +51,7 @@ public class NotesAdapter extends ListAdapter<Note, NotesAdapter.ViewHolder> {
                 notifyItemChanged(index);
                 return true;
             });
-            binding.deleteBtn.setOnClickListener(view -> {
-                deleteListener.onItemClick(note);
-            });
+            binding.deleteBtn.setOnClickListener(view -> deleteListener.onItemClick(note));
             binding.cancelBtn.setOnClickListener(view -> {
                 note.setShowDelete(false);
                 notifyItemChanged(index);

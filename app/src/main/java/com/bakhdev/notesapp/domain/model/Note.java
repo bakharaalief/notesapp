@@ -1,9 +1,9 @@
 package com.bakhdev.notesapp.domain.model;
 
 public class Note {
-    int id;
-    String title;
-    String desc;
+    final int id;
+    final String title;
+    final String desc;
     boolean showDelete;
 
     public Note(int id, String title, String desc) {
