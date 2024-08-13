@@ -5,18 +5,26 @@ import com.bakhdev.notesapp.domain.model.Note;
 import com.bakhdev.notesapp.domain.repository.NoteRepository;
 import com.bakhdev.notesapp.helper.Mapper;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 @Singleton
 public class NoteRepositoryImpl implements NoteRepository {
     AppDatabase appDatabase;
 
     @Inject
-    public NoteRepositoryImpl(AppDatabase appDatabase){
+    public NoteRepositoryImpl(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
+    }
+
+    @Override
+    public Flowable<List<Note>> getNotes() {
+        return appDatabase.noteDao().getNotes().map(Mapper::toListNote);
     }
 
     @Override

@@ -8,4 +8,5 @@
     <string name="form_empty">Form Empty</string>
     <string name="please_fill_the_data">Please fill the data</string>
     <string name="status">Status</string>
+    <string name="notes_app">Notes App</string>
 </resources>

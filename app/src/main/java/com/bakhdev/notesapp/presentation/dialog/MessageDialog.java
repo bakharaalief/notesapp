@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class MessageDialog extends DialogFragment {
-    String title = "";
-    String msg = "";
+    private String title = "";
+    private String msg = "";
 
     @NonNull
     @Override

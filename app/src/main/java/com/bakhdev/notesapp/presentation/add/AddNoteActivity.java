@@ -35,6 +35,7 @@ public class AddNoteActivity extends BaseActivity<ActivityAddNoteBinding>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUp();
+        setUpToolbar();
         binding.addBtn.setOnClickListener(this);
     }
 
@@ -56,6 +57,15 @@ public class AddNoteActivity extends BaseActivity<ActivityAddNoteBinding>
         addNoteViewModel = new ViewModelProvider(this).get(AddNoteViewModel.class);
         loadingDialog = new LoadingDialog();
         messageDialog = new MessageDialog();
+    }
+
+    private void setUpToolbar() {
+        binding.topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void showLoadingDialog(boolean show) {
@@ -99,6 +109,7 @@ public class AddNoteActivity extends BaseActivity<ActivityAddNoteBinding>
                             @Override
                             public void onComplete() {
                                 showLoadingDialog(false);
+                                onBackPressed();
                             }
 
                             @Override
