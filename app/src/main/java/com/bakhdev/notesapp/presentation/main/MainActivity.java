@@ -14,6 +14,7 @@ import com.bakhdev.notesapp.presentation.adapter.NotesAdapter;
 import com.bakhdev.notesapp.presentation.adapter.OnItemClickListener;
 import com.bakhdev.notesapp.presentation.add.AddNoteActivity;
 import com.bakhdev.notesapp.presentation.base.BaseActivity;
+import com.bakhdev.notesapp.presentation.detail.DetailActivity;
 import com.bakhdev.notesapp.presentation.dialog.LoadingDialog;
 import com.bakhdev.notesapp.presentation.dialog.MessageDialog;
 
@@ -85,7 +86,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
 
     @Override
     public void onItemClick(Note note) {
-        System.out.println(note.getTitle());
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.TITLE_VALUE, note.getTitle());
+        intent.putExtra(DetailActivity.DESC_VALUE, note.getDesc());
+        startActivity(intent);
     }
 
     @Override
