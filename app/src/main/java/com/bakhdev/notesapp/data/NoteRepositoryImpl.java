@@ -31,4 +31,14 @@ public class NoteRepositoryImpl implements NoteRepository {
     public Completable insertNote(Note note) {
         return appDatabase.noteDao().insert(Mapper.toNoteEntity(note));
     }
+
+    @Override
+    public Completable deleteNote(Note note) {
+        return appDatabase.noteDao().delete(Mapper.toNoteEntity(note));
+    }
+
+    @Override
+    public Completable updateNote(Note note) {
+        return appDatabase.noteDao().update(Mapper.toNoteEntity(note));
+    }
 }

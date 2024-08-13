@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 @HiltViewModel
@@ -23,5 +24,9 @@ public class MainViewModel extends ViewModel {
 
     Flowable<List<Note>> getNotes() {
         return noteUseCase.getNotes();
+    }
+
+    Completable deleteNote(Note note) {
+        return noteUseCase.deleteNote(note);
     }
 }

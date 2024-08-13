@@ -29,4 +29,14 @@ public class NoteUseCaseImpl implements NoteUseCase {
     public Completable insertNote(Note note) {
         return noteRepository.insertNote(note);
     }
+
+    @Override
+    public Completable deleteNote(Note note) {
+        return noteRepository.deleteNote(note);
+    }
+
+    @Override
+    public Completable updateNote(Note note) {
+        return noteRepository.updateNote(note);
+    }
 }

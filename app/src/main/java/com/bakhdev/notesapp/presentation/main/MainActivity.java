@@ -11,11 +11,9 @@ import com.bakhdev.notesapp.R;
 import com.bakhdev.notesapp.databinding.ActivityMainBinding;
 import com.bakhdev.notesapp.domain.model.Note;
 import com.bakhdev.notesapp.presentation.adapter.NotesAdapter;
-import com.bakhdev.notesapp.presentation.adapter.OnItemClickListener;
 import com.bakhdev.notesapp.presentation.add.AddNoteActivity;
 import com.bakhdev.notesapp.presentation.base.BaseActivity;
 import com.bakhdev.notesapp.presentation.detail.DetailActivity;
-import com.bakhdev.notesapp.presentation.dialog.LoadingDialog;
 import com.bakhdev.notesapp.presentation.dialog.MessageDialog;
 
 import java.util.List;
@@ -23,16 +21,16 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity<ActivityMainBinding>
-        implements View.OnClickListener, OnItemClickListener {
+        implements View.OnClickListener {
     private MainViewModel mainViewModel;
     private NotesAdapter notesAdapter;
     private CompositeDisposable compositeDisposable;
-    private LoadingDialog loadingDialog;
     private MessageDialog messageDialog;
 
     @Override
@@ -58,24 +56,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     private void setUp() {
         compositeDisposable = new CompositeDisposable();
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        loadingDialog = new LoadingDialog();
         messageDialog = new MessageDialog();
     }
 
     private void setUpAdapter() {
-        notesAdapter = new NotesAdapter(this);
+        notesAdapter = new NotesAdapter(this::onItemClick, this::onItemDeleteClick);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.notesRv.setLayoutManager(linearLayoutManager);
         binding.notesRv.setAdapter(notesAdapter);
-    }
-
-    private void showLoadingDialog(boolean show) {
-        if (show) {
-            loadingDialog.setCancelable(false);
-            loadingDialog.show(getSupportFragmentManager(), "Loading_Dialog");
-        } else {
-            loadingDialog.dismiss();
-        }
     }
 
     private void showMessageDialog(String title, String msg) {
@@ -84,12 +72,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         messageDialog.show(getSupportFragmentManager(), "MSG_DIALOG");
     }
 
-    @Override
     public void onItemClick(Note note) {
         Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.ID_VALUE, note.getId());
         intent.putExtra(DetailActivity.TITLE_VALUE, note.getTitle());
         intent.putExtra(DetailActivity.DESC_VALUE, note.getDesc());
         startActivity(intent);
+    }
+
+    public void onItemDeleteClick(Note note) {
+        deleteNote(note);
     }
 
     @Override
@@ -105,7 +97,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     }
 
     private void getNotesData() {
-        showLoadingDialog(true);
         compositeDisposable.add(
                 mainViewModel.getNotes()
                         .subscribeOn(Schedulers.io())
@@ -114,18 +105,36 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                             @Override
                             public void onNext(List<Note> notes) {
                                 notesAdapter.submitList(notes);
-                                showLoadingDialog(false);
                             }
 
                             @Override
                             public void onError(Throwable t) {
                                 showMessageDialog("error", t.getMessage());
-                                showLoadingDialog(false);
                             }
 
                             @Override
                             public void onComplete() {
-                                showLoadingDialog(false);
+
+                            }
+                        })
+        );
+    }
+
+    private void deleteNote(Note note) {
+
+        compositeDisposable.add(
+                mainViewModel.deleteNote(note)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableCompletableObserver() {
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                showMessageDialog(getString(R.string.status), e.getMessage());
                             }
                         })
         );

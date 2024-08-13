@@ -4,11 +4,13 @@ public class Note {
     int id;
     String title;
     String desc;
+    boolean showDelete;
 
     public Note(int id, String title, String desc) {
         this.id = id;
         this.title = title;
         this.desc = desc;
+        this.showDelete = false;
     }
 
     public int getId() {
@@ -21,5 +23,13 @@ public class Note {
 
     public String getDesc() {
         return desc;
+    }
+
+    public void setShowDelete(boolean showDelete) {
+        this.showDelete = showDelete;
+    }
+
+    public boolean isShowDelete() {
+        return showDelete;
     }
 }

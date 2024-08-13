@@ -14,11 +14,16 @@ import com.bakhdev.notesapp.databinding.NoteItemBinding;
 import com.bakhdev.notesapp.domain.model.Note;
 
 public class NotesAdapter extends ListAdapter<Note, NotesAdapter.ViewHolder> {
-    private OnItemClickListener itemListener;
+    private final OnItemClickListener itemListener;
+    private final OnItemClickListener deleteListener;
 
-    public NotesAdapter(OnItemClickListener onItemClickListener) {
+    public NotesAdapter(
+            OnItemClickListener onItemClickListener,
+            OnItemClickListener onDeleteClickListener
+    ) {
         super(NoteDiffCallback);
         this.itemListener = onItemClickListener;
+        this.deleteListener = onDeleteClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -29,14 +34,29 @@ public class NotesAdapter extends ListAdapter<Note, NotesAdapter.ViewHolder> {
             this.binding = binding;
         }
 
-        void bind(Note note) {
+        void bind(int index, Note note) {
+            //handle change card
+            if (note.isShowDelete()) {
+                binding.noteCard.setVisibility(View.GONE);
+                binding.noteDeleteCard.setVisibility(View.VISIBLE);
+            } else {
+                binding.noteCard.setVisibility(View.VISIBLE);
+                binding.noteDeleteCard.setVisibility(View.GONE);
+            }
             binding.titleTv.setText(note.getTitle());
             binding.descTv.setText(note.getDesc());
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemListener.onItemClick(note);
-                }
+            binding.noteCard.setOnClickListener(view -> itemListener.onItemClick(note));
+            binding.noteCard.setOnLongClickListener(view -> {
+                note.setShowDelete(true);
+                notifyItemChanged(index);
+                return true;
+            });
+            binding.deleteBtn.setOnClickListener(view -> {
+                deleteListener.onItemClick(note);
+            });
+            binding.cancelBtn.setOnClickListener(view -> {
+                note.setShowDelete(false);
+                notifyItemChanged(index);
             });
         }
     }
@@ -52,7 +72,7 @@ public class NotesAdapter extends ListAdapter<Note, NotesAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder holder, int position) {
         Note note = getItem(position);
-        holder.bind(note);
+        holder.bind(position, note);
     }
 
     private static final DiffUtil.ItemCallback<Note> NoteDiffCallback = new DiffUtil.ItemCallback<Note>() {
