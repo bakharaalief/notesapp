@@ -9,6 +9,6 @@ import io.reactivex.Flowable;
 
 public interface NoteUseCase {
     Flowable<List<Note>> getNotes();
-
     Completable insertNote(Note note);
+    Completable deleteNote(Note note);
 }
