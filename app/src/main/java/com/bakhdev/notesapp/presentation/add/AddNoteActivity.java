@@ -26,10 +26,10 @@ public class AddNoteActivity extends BaseActivity<ActivityAddNoteBinding>
     private AddNoteViewModel addNoteViewModel;
     private MessageDialog messageDialog;
 
-    public static String IS_EDIT = "ID_EDIT";
-    public static String ID_VALUE = "ID_VALUE";
-    public static String TITLE_VALUE = "TITLE_VALUE";
-    public static String DESC_VALUE = "DESC_VALUE";
+    public static final String IS_EDIT = "ID_EDIT";
+    public static final String ID_VALUE = "ID_VALUE";
+    public static final String TITLE_VALUE = "TITLE_VALUE";
+    public static final String DESC_VALUE = "DESC_VALUE";
 
     private boolean isEdit = false;
     private Note note;

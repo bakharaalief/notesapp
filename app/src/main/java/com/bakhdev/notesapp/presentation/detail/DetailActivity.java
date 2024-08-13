@@ -10,9 +10,9 @@ import com.bakhdev.notesapp.presentation.add.AddNoteActivity;
 import com.bakhdev.notesapp.presentation.base.BaseActivity;
 
 public class DetailActivity extends BaseActivity<ActivityDetailBinding> {
-    public static String ID_VALUE = "ID_VALUE";
-    public static String TITLE_VALUE = "TITLE_VALUE";
-    public static String DESC_VALUE = "DESC_VALUE";
+    public static final String ID_VALUE = "ID_VALUE";
+    public static final String TITLE_VALUE = "TITLE_VALUE";
+    public static final String DESC_VALUE = "DESC_VALUE";
 
     private Note note;
 

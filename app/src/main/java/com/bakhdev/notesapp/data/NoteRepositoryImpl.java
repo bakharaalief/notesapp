@@ -15,7 +15,7 @@ import io.reactivex.Flowable;
 
 @Singleton
 public class NoteRepositoryImpl implements NoteRepository {
-    AppDatabase appDatabase;
+    final AppDatabase appDatabase;
 
     @Inject
     public NoteRepositoryImpl(AppDatabase appDatabase) {

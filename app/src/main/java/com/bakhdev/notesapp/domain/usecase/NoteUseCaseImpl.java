@@ -13,7 +13,7 @@ import io.reactivex.Flowable;
 
 @Singleton
 public class NoteUseCaseImpl implements NoteUseCase {
-    NoteRepository noteRepository;
+    final NoteRepository noteRepository;
 
     @Inject
     public NoteUseCaseImpl(NoteRepository noteRepository) {
